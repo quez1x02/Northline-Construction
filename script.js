@@ -1,0 +1,8 @@
+const header=document.querySelector('header'),menu=document.querySelector('.menu'),nav=document.querySelector('#nav');
+addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>25));
+menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',open)});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false')}));
+document.querySelectorAll('a[href="#top"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,'','#top')}));
+const tabs=document.querySelectorAll('.tabs button'),panels=document.querySelectorAll('.menu-list');tabs.forEach(tab=>tab.addEventListener('click',()=>{tabs.forEach(t=>t.classList.remove('active'));panels.forEach(p=>p.classList.remove('active'));tab.classList.add('active');document.querySelector(`[data-panel="${tab.dataset.tab}"]`).classList.add('active')}));
+const date=document.querySelector('#reserveDate');date.min=new Date().toISOString().slice(0,10);date.value=new Date(Date.now()+86400000).toISOString().slice(0,10);
+document.querySelector('#reserveForm').addEventListener('submit',e=>{e.preventDefault();if(!e.currentTarget.checkValidity()){e.currentTarget.reportValidity();return}const data=new FormData(e.currentTarget),msg=e.currentTarget.querySelector('.form-message');msg.textContent=`Thanks, ${data.get('name')} — we’ll hold your table for ${data.get('party')} on ${data.get('date')}. Check ${data.get('email')} for the details.`;e.currentTarget.reset()});
